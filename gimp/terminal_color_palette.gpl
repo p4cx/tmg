@@ -1,0 +1,20 @@
+GIMP Palette
+Name: terminal_color_palette #1
+Columns: 0
+#
+ 85  85  85	dark_grey
+170 170 170	grey
+170  85   0	brown
+170   0 170	purple
+170   0   0	red
+  0 170 170	cyan
+  0 170   0	green
+  0   0 170	blue
+  0   0   0	black
+255 255 255	white
+255  85  85	light_red
+ 85 255  85	light_green
+255 255  85	yellow
+ 85 255 255	light_cyan
+255  85 255	light_purple
+ 85  85 255	light_blue
