@@ -1,9 +1,32 @@
 # Text Mode Graphic [TMG]
 
-### *Image* file format for [elfboot](https://github.com/croemheld/elfboot).
-elfboot is a text-based boot loader that cannot load and print normal image files. However, in order to display images, the ASCII character 220 (bottom half block) &lhblk;, a background color and the foreground color are used to paint two *pixels* per text character.
+### Image file format for [elfboot](https://github.com/croemheld/elfboot).
+elfboot is a bootloader for the x86 architecture which uses VGA video mode 3 for displaying information. Since a bootloader usually resides in the first 64 KB of memory, loading and displaying images might waste precious memory.
+The TMG project aims to drastically reduce image files by only using the [16 available colors](https://wiki.osdev.org/Printing_To_Screen#Color_Table) in VGA video mode 3 and the ASCII/Code Page 737 character 220 (bottom half block &lhblk;).
 
-These colors are available in text mode: [color table](https://wiki.osdev.org/Printing_To_Screen#Color_Table)
+#### VGA video mode 3 font
+Usually, VGA video mode 3 uses 9x16 pixels for each glyph. Since an image consists of square pixels, we use the &lhblk; glyph to cover half of the area, which results in two vertically stacked pixels. By using the attribute byte of screen character, we can color both "pixels" by defining the foreground color for the bottom and the background color for the top half of the glyph.
+
+```
+    __ __ __ __ __ __ __ __ __
+   |                          |
+   |                          |
+   |                          |
+   |        Background        |
+   |                          |
+   |                          |
+   |                          |
+   |                          |
+   ----------------------------
+   |                          |
+   |                          |
+   |                          |
+   |       Code Page 737      |
+   |       Character 220      |
+   |                          |
+   |                          |
+   |__ __ __ __ __ __ __ __ __|
+```
 
 
 #### File schematic: (work in progress)
