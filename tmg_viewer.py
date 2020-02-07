@@ -47,53 +47,58 @@ def get_value(number):
 
 def preview(input_path, debug):
     with open(input_path, 'rb') as f:
-        header = f.read(3).decode('ascii')
-        version = ord(f.read(1))
-        mode = ord(f.read(1))
-        alpha_color = ord(f.read(1))
-        width = ord(f.read(1))
-        height = ord(f.read(1))
+        header_raw = f.read(3)
+        if header_raw == b'TMG':
+            header = header_raw.decode('ascii')
+            version = ord(f.read(1))
+            mode = ord(f.read(1))
+            alpha_color = ord(f.read(1))
+            width = ord(f.read(1))
+            height = ord(f.read(1))
 
-        if debug:
-            print('\033[41;30m DEBUG \033[39m')
-            print(' \033[31mPATH                   :  ' + input_path + '\033[39m')
-            print(' \033[31mSIZE            (Bytes):  ' + str(os.path.getsize(args.input)) + '\033[39m')
-            print(' \033[31mTAG           (3 Bytes):  ' + header + '\033[39m')
-            print(' \033[31mVERSION       (1 Bytes):  ' + str(version) + '\033[39m')
-            print(' \033[31mMODE          (1 Bytes):  ' + str(mode) + '\033[39m')
-            print(' \033[31mALPHA_COLOR   (1 Bytes):  ' + str(alpha_color) + '\033[39m'
-                  + ' \u2794 \033[' + get_color('bg', alpha_color) + 'm  \033[39m')
-            print(' \033[31mWIDTH         (1 Bytes):  ' + str(width) + '\033[39m')
-            print(' \033[31mHEIGHT        (1 Bytes):  ' + str(height) + '\033[39m')
+            if debug:
+                print('\033[41;30m DEBUG \033[39m')
+                print(' \033[31mPATH                   :  ' + input_path + '\033[39m')
+                print(' \033[31mSIZE            (Bytes):  ' + str(os.path.getsize(args.input)) + '\033[39m')
+                print(' \033[31mTAG           (3 Bytes):  ' + header + '\033[39m')
+                print(' \033[31mVERSION       (1 Bytes):  ' + str(version) + '\033[39m')
+                print(' \033[31mMODE          (1 Bytes):  ' + str(mode) + '\033[39m')
+                print(' \033[31mALPHA_COLOR   (1 Bytes):  ' + str(alpha_color) + '\033[39m'
+                      + ' \u2794 \033[' + get_color('bg', alpha_color) + 'm  \033[39m')
+                print(' \033[31mWIDTH         (1 Bytes):  ' + str(width) + '\033[39m')
+                print(' \033[31mHEIGHT        (1 Bytes):  ' + str(height) + '\033[39m')
 
-        if mode is 0:
-            print(' ')
-            for x in range(0, int(height / 2)):
-                print(' ', end=' ')
-                for y in range(0, width):
-                    color_value = ord(f.read(1))
-                    bg_color = int(color_value / 16)
-                    fg_color = int(color_value % 16)
-                    print('\033[' + get_color('bg', bg_color) + ';'
-                          + get_color('fg', fg_color) + 'm' + get_value(220) + '\033[39m', end='')
+            if mode is 0:
                 print(' ')
-            print(' ')
-        elif mode is 1:
-            print(' ')
-            for x in range(0, int(height / 2)):
-                print(' ', end=' ')
-                for y in range(0, width):
-                    value = ord(f.read(1))
-                    color_value = ord(f.read(1))
-                    bg_color = int(color_value / 16)
-                    fg_color = int(color_value % 16)
-                    print('\033[' + get_color('bg', bg_color) + ';'
-                          + get_color('fg', fg_color) + 'm' + get_value(value) + '\033[39m', end='')
+                for x in range(0, int(height / 2)):
+                    print(' ', end=' ')
+                    for y in range(0, width):
+                        color_value = ord(f.read(1))
+                        bg_color = int(color_value / 16)
+                        fg_color = int(color_value % 16)
+                        print('\033[' + get_color('bg', bg_color) + ';'
+                              + get_color('fg', fg_color) + 'm' + get_value(220) + '\033[39m', end='')
+                    print(' ')
                 print(' ')
-            print(' ')
+            elif mode is 1:
+                print(' ')
+                for x in range(0, int(height / 2)):
+                    print(' ', end=' ')
+                    for y in range(0, width):
+                        value = ord(f.read(1))
+                        color_value = ord(f.read(1))
+                        bg_color = int(color_value / 16)
+                        fg_color = int(color_value % 16)
+                        print('\033[' + get_color('bg', bg_color) + ';'
+                              + get_color('fg', fg_color) + 'm' + get_value(value) + '\033[39m', end='')
+                    print(' ')
+                print(' ')
 
+            else:
+                print('\033[41;97m Mode ' + str(mode) + ' is not supported! \033[39m')
+                sys.exit(1)
         else:
-            print('\033[41;97m Mode ' + str(mode) + ' is not supported! \033[39m')
+            print('\033[41;97m This is no valid tmg file! \033[39m')
             sys.exit(1)
 
 
