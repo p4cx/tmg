@@ -55,7 +55,6 @@ A new approach has been developed to support transparent images
 #### TMG File schematic: 
 - Mode: 0 or 1
     - 0: smaller image size, no transparency and no ascii values in body
-        - it's a minimal approach, 
     - 1: bigger image size, transparency and ascii values in body
 - Alpha_Color: color value
 - Width: pixel width of the picture
@@ -72,7 +71,7 @@ HEADER (8 Byte)
 ```
 BODY (mode = 0)  
 +-------------------------------------------------------------------------------+
-| fc ff a3 ...                                                         | 
+| fc ff a3 ...                                                                  | 
 |                                                                               |
 |                                                                               |
 +-------------------------------------------------------------------------------+
@@ -99,6 +98,7 @@ BODY (mode = 1)
 
 #### Example   
 This _beer_ image is from the fantastic [*openmoji*](https://openmoji.org/library/#search=beer&emoji=1F37A) *(License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/))* project:    
+   
 ![alt text](./res/beer.png "Beer")   
    
 ![alt text](./res/screenshot.png "Screenshot")   
