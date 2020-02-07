@@ -55,6 +55,7 @@ A new approach has been developed to support transparent images
 #### TMG File schematic: 
 - Mode: 0 or 1
     - 0: smaller image size, no transparency and no ascii values in body
+        - it's a minimal approach, 
     - 1: bigger image size, transparency and ascii values in body
 - Alpha_Color: color value
 - Width: pixel width of the picture
@@ -67,7 +68,21 @@ HEADER (8 Byte)
 +-------------------+-------------------+-------------------+-------------------+
 | Mode         (1B) | Alpha_Color  (1B) | Width        (1B) | Height       (1B) |
 +-------------------+-------------------+-------------------+-------------------+
-
+```
+```
+BODY (mode = 0)  
++-------------------------------------------------------------------------------+
+| fc ff a3 ...                                                         | 
+|                                                                               |
+|                                                                               |
++-------------------------------------------------------------------------------+
+```
+`fc ff a3` <- this are six pixel   
+   
+To display this file, the parser must insert the ASCII value &lhblk; before each color block (1 byte).   
+`fc` <- `f`: 15 = white background, `c`: 12 = light red foreground    
+   
+```
 BODY (mode = 1)  
 +-------------------------------------------------------------------------------+
 | dc fc dc ff dc a3 ...                                                         | 
@@ -75,11 +90,10 @@ BODY (mode = 1)
 |                                                                               |
 +-------------------------------------------------------------------------------+
 ```
-
 `dc ff dc ff dc a3` <- this are six pixel   
    
-`dc` <- 220 <- ascii value: &lhblk;   
-`fc` <- `f`: 15 = white background, `c`: 12 = light red foreground (&lhblk;)   
+`dc` <- 220 <- ASCII value: &lhblk;   
+`fc` <- `f`: 15 = white background, `c`: 12 = light red foreground ( color of the ASCII value )   
    
 ... 
 
